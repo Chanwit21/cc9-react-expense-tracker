@@ -49,9 +49,21 @@ function filterTransaction(text, month, year, filterTransactionFrom) {
   return transactionFilter;
 }
 
+function filterByPagination(numberOfShowPage, onPage, arrayFilter) {
+  const result = [...arrayFilter].splice(
+    numberOfShowPage * (onPage - 1),
+    numberOfShowPage
+  );
+  return result;
+}
+
 function App() {
   const [transactions, setTransactions] = useState(INITIAL_TRANSACTION);
   const [filter, setFilter] = useState({ text: "", month: "", year: "" });
+  const [filterPagination, setFilterPagination] = useState({
+    number: 10,
+    onPage: 1,
+  });
 
   const addTransaction = (newTransaction) => {
     // setTransactions(curTransactions => [newTransaction, ...newTransaction]);
@@ -73,11 +85,24 @@ function App() {
     setTransactions(newTransactions);
   }
 
-  const transactionsFilter = filterTransaction(
+  const detectPagination = (numberOfShowPage, onPage) => {
+    setFilterPagination({
+      number: numberOfShowPage,
+      onPage: onPage,
+    });
+  };
+
+  const transactionFilter1 = filterTransaction(
     filter.text,
     filter.month,
     filter.year,
     transactions
+  );
+
+  const transactionsFilter = filterByPagination(
+    filterPagination.number,
+    filterPagination.onPage,
+    filterTransaction(filter.text, filter.month, filter.year, transactions)
   );
 
   return (
@@ -85,7 +110,10 @@ function App() {
       <TransactionForm addTransaction={addTransaction} />
       <Summary transactions={transactions} />
       <SearchBar detectFilter={detectFilter} transactions={transactions} />
-      <Pagination />
+      <Pagination
+        transactionFilter1={transactionFilter1}
+        detectPagination={detectPagination}
+      />
       <Transaction
         transactionsFilter={transactionsFilter}
         deleteTransaction={deleteTransaction}
