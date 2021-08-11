@@ -11,7 +11,7 @@ import { formatDateShortMonthShortYear } from "./service/dateService";
 
 function filterTransaction(text, month, year, filterTransactionFrom) {
   const transactionFilter = filterTransactionFrom
-    .filter(item => {
+    .filter((item) => {
       const {
         payee,
         amount,
@@ -28,7 +28,7 @@ function filterTransaction(text, month, year, filterTransactionFrom) {
       }
       return false;
     })
-    .filter(item => {
+    .filter((item) => {
       const { date } = item;
       if (formatDateShortMonthShortYear(date).split(" ")[0] === month) {
         return true;
@@ -37,7 +37,7 @@ function filterTransaction(text, month, year, filterTransactionFrom) {
       }
       return false;
     })
-    .filter(item => {
+    .filter((item) => {
       const { date } = item;
       if (formatDateShortMonthShortYear(date).split(" ")[1] === year) {
         return true;
@@ -53,7 +53,7 @@ function App() {
   const [transactions, setTransactions] = useState(INITIAL_TRANSACTION);
   const [filter, setFilter] = useState({ text: "", month: "", year: "" });
 
-  const addTransaction = newTransaction => {
+  const addTransaction = (newTransaction) => {
     // setTransactions(curTransactions => [newTransaction, ...newTransaction]);
     const cloneTransactions = [...transactions];
     cloneTransactions.unshift(newTransaction);
@@ -69,7 +69,7 @@ function App() {
   };
 
   function deleteTransaction(id) {
-    const newTransactions = transactions.filter(item => item.id !== id);
+    const newTransactions = transactions.filter((item) => item.id !== id);
     setTransactions(newTransactions);
   }
 
