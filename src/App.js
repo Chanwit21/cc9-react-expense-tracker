@@ -64,6 +64,8 @@ function App() {
     number: 10,
     onPage: 1,
   });
+  const [isEdit, setIsEdit] = useState(false);
+  const [contentToEdit, setContentToEdit] = useState({});
 
   const addTransaction = (newTransaction) => {
     // setTransactions(curTransactions => [newTransaction, ...newTransaction]);
@@ -92,6 +94,24 @@ function App() {
     });
   };
 
+  // console.log(isEdit);
+  // console.log(contentToEdit);
+  const clickToEdit = (obj) => {
+    setContentToEdit(obj);
+    setIsEdit(true);
+  };
+
+  const saveEditForm = (newTransaction) => {
+    const newTransactions = [...transactions];
+    const idx = newTransactions.findIndex(
+      (item) => item.id === newTransaction.id
+    );
+    newTransactions[idx] = newTransaction;
+    setTransactions(newTransactions);
+    setContentToEdit({});
+    setIsEdit(false);
+  };
+
   const transactionFilter1 = filterTransaction(
     filter.text,
     filter.month,
@@ -107,7 +127,12 @@ function App() {
 
   return (
     <Container>
-      <TransactionForm addTransaction={addTransaction} />
+      <TransactionForm
+        addTransaction={addTransaction}
+        isEdit={isEdit}
+        contentToEdit={contentToEdit}
+        saveEditForm={saveEditForm}
+      />
       <Summary transactions={transactions} />
       <SearchBar detectFilter={detectFilter} transactions={transactions} />
       <Pagination
@@ -117,6 +142,7 @@ function App() {
       <Transaction
         transactionsFilter={transactionsFilter}
         deleteTransaction={deleteTransaction}
+        clickToEdit={clickToEdit}
       />
     </Container>
   );
