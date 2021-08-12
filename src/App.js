@@ -112,6 +112,11 @@ function App() {
     setIsEdit(false);
   };
 
+  const cancleEdit = () => {
+    setContentToEdit({});
+    setIsEdit(false);
+  };
+
   const transactionFilter1 = filterTransaction(
     filter.text,
     filter.month,
@@ -132,18 +137,23 @@ function App() {
         isEdit={isEdit}
         contentToEdit={contentToEdit}
         saveEditForm={saveEditForm}
+        cancleEdit={cancleEdit}
       />
-      <Summary transactions={transactions} />
-      <SearchBar detectFilter={detectFilter} transactions={transactions} />
-      <Pagination
-        transactionFilter1={transactionFilter1}
-        detectPagination={detectPagination}
-      />
-      <Transaction
-        transactionsFilter={transactionsFilter}
-        deleteTransaction={deleteTransaction}
-        clickToEdit={clickToEdit}
-      />
+      {!isEdit ? (
+        <>
+          <Summary transactions={transactions} />
+          <SearchBar detectFilter={detectFilter} transactions={transactions} />
+          <Pagination
+            transactionFilter1={transactionFilter1}
+            detectPagination={detectPagination}
+          />
+          <Transaction
+            transactionsFilter={transactionsFilter}
+            deleteTransaction={deleteTransaction}
+            clickToEdit={clickToEdit}
+          />
+        </>
+      ) : null}
     </Container>
   );
 }

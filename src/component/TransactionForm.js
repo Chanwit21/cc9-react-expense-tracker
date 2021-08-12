@@ -27,7 +27,8 @@ const validateDate = (value) => {
 };
 
 function TransactionForm(props) {
-  const { addTransaction, isEdit, contentToEdit, saveEditForm } = props;
+  const { addTransaction, isEdit, contentToEdit, saveEditForm, cancleEdit } =
+    props;
   const [type, setType] = useState("Expense");
   const [category, setCategory] = useState(EXPENSES[0].id);
   const [payee, setPayee] = useState("");
@@ -150,6 +151,17 @@ function TransactionForm(props) {
     }
   };
 
+  const handleClickCancleEdit = () => {
+    setType("Expense");
+    setCategory(EXPENSES[0].id);
+    setPayee("");
+    setAmount("");
+    setDate("");
+    setComment("");
+    setError({});
+    cancleEdit();
+  };
+
   const categoryOptions = (type === "Expense" ? EXPENSES : INCOMES).map(
     (item) => {
       return (
@@ -168,7 +180,14 @@ function TransactionForm(props) {
           isEdit ? handleClickSaveEditForm(e) : handleSubmitForm(e)
         }>
         {isEdit ? (
-          <div className="col-12 btn btn-secondary">Edit</div>
+          <div className="d-flex justify-content-between">
+            <div className="col-4 btn bg-secondary text-white">Edit</div>
+            <div
+              className="col-4 btn btn-danger"
+              onClick={() => handleClickCancleEdit()}>
+              Cancle edit
+            </div>
+          </div>
         ) : (
           <div className="col-12">
             <input
